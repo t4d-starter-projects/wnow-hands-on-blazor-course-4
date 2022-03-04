@@ -1,0 +1,31 @@
+﻿@using HelloWorldBlazorWASMApp.Shared;
+
+<ul>
+  @if (!Colors.Any()) {
+    <li>No Colors</li>
+  }
+  @foreach(var color in Colors) {
+    <li>
+      @color.Name - @color.Hexcode
+      <button @onclick="@(() => doColorAction(@color.Id))">@ColorActionText</button>
+    </li>
+  }
+</ul>
+
+@code {
+
+  [Parameter]
+  public string ColorActionText { get; set; } = "Do It";
+
+  [Parameter]
+  public IEnumerable<Color> Colors { get; set; } = new List<Color>();
+
+  [Parameter]
+  public EventCallback<int> ColorAction { get; set; }
+
+
+  private async Task doColorAction(int colorId) {
+    await ColorAction.InvokeAsync(colorId);
+  }
+
+}

@@ -2,16 +2,16 @@
 
 @using HelloWorldBlazorWASMApp.Shared;
 
-<h3>Color Tool</h3>
+<ToolHeader HeaderText="Color Tool" />
 
-<ul>
-  @if (!colors.Any()) {
-    <li>No Colors</li>
-  }
-  @foreach(var color in colors) {
-    <li>@color.Name - @color.Hexcode</li>
-  }
-</ul>
+<ColorList
+  ColorActionText="X"
+  ColorAction="@doDeleteColor"
+  Colors="@(colors.Select(c => new Color() {
+    Id = c.Id,
+    Name = c.Name,
+    Hexcode = "#" + c.Hexcode.ToUpper(),
+  }))" />
 
 <button @onclick="addPurple">Add Purple</button>
 
@@ -26,6 +26,10 @@
   private void addPurple()
   {
     colors.Add(new Color() { Id=4, Name="purple", Hexcode="ff00ff" });
+  }
+
+  private void doDeleteColor(int colorId) {
+    colors = colors.Where(c => c.Id != colorId).ToList();
   }
 
 }
